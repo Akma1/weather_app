@@ -18,6 +18,7 @@ class HomeView extends GetView<HomeController> {
       () => Stack(
         children: [
           Scaffold(
+            backgroundColor: Colors.transparent,
             body: Stack(
               children: [
                 buildStreamBackgroundThemeWidget(
@@ -39,6 +40,7 @@ class HomeView extends GetView<HomeController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  const SizedBox(height: 20),
                                   Text(
                                     formatDate(
                                       now,
