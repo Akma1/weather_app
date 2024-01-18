@@ -13,7 +13,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final currentData = controller.data.value.value?.current;
+    // var currentData = controller.data.value.value?.current;
     return Obx(
       () => Stack(
         children: [
@@ -25,180 +25,194 @@ class HomeView extends GetView<HomeController> {
                     theme: ColorTheme.sky,
                   ),
                 ),
-                Stack(
+                Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          height: Get.height * .5,
-                          decoration: const BoxDecoration(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                formatDate(
-                                  now,
-                                ), // 'Thursday, 18 January, 2024',
-                                style: Get.textTheme.labelLarge
-                                    ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
-                              ),
-                              Text(
-                                '${controller.data.value.value?.location?.name}, ${controller.data.value.value?.location?.region}, ${controller.data.value.value?.location?.country}', // 'Malang, East Java, Indonesia',
-                                style: Get.textTheme.labelSmall?.copyWith(color: Colors.white),
-                              ),
-                              Row(
+                    Obx(
+                      () => Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              height: 400,
+                              decoration: const BoxDecoration(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text(
+                                    formatDate(
+                                      now,
+                                    ), // 'Thursday, 18 January, 2024',
+                                    style: Get.textTheme.labelLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                                  ),
+                                  Text(
+                                    '${controller.data.value.value?.location?.name}, ${controller.data.value.value?.location?.region}, ${controller.data.value.value?.location?.country}', // 'Malang, East Java, Indonesia',
+                                    style: Get.textTheme.labelSmall?.copyWith(color: Colors.white),
+                                  ),
                                   Row(
                                     children: [
-                                      Text(
-                                        '${currentData?.tempC?.ceil() ?? 0}',
-                                        style: Get.textTheme.titleLarge?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 100,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Transform.translate(
-                                        offset: const Offset(0, -20),
-                                        child: Text(
-                                          '°C',
-                                          style: Get.textTheme.labelLarge?.copyWith(
-                                            fontSize: 30,
-                                            color: Colors.white,
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${controller.data.value.value?.current?.tempC?.ceil() ?? 0}',
+                                            style: Get.textTheme.titleLarge?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 100,
+                                              color: Colors.white,
+                                            ),
                                           ),
+                                          Transform.translate(
+                                            offset: const Offset(0, -20),
+                                            child: Text(
+                                              '°C',
+                                              style: Get.textTheme.labelLarge?.copyWith(
+                                                fontSize: 30,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      Container(
+                                        constraints: BoxConstraints(maxWidth: width * .5, maxHeight: width * .5),
+                                        child: LottieBuilder.asset(
+                                          'assets/lotties/weather-sunny.json',
+                                          width: width * .5,
+                                          height: width * .5,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const Spacer(),
-                                  LottieBuilder.asset(
-                                    'assets/lotties/weather-sunny.json',
-                                    width: 200,
-                                    height: 200,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: width,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  child: Expanded(
-                                    child: Row(
-                                      children: [
-                                        buildCardInfoHeader(
-                                          img: 'assets/icons/wind.png',
-                                          label: 'Wind Velocity',
-                                          value: '${currentData?.gustKph ?? 0} km/h',
-                                          width: width,
-                                        ),
-                                        buildCardInfoHeader(
-                                          width: width,
-                                          img: 'assets/icons/ultraviolet-solid.png',
-                                          label: 'UV Index',
-                                          value: '${currentData?.uv ?? 0}',
-                                        ),
-                                        buildCardInfoHeader(
-                                          width: width,
-                                          img: 'assets/icons/humidity.png',
-                                          label: 'Humidity',
-                                          value: '${currentData?.humidity ?? 0}',
-                                        ),
-                                        buildCardInfoHeader(
-                                          width: width,
-                                          img: 'assets/icons/wind-degree.png',
-                                          label: 'Wind Degree',
-                                          value: '${currentData?.windDegree ?? 0}°',
-                                        ),
-                                        buildCardInfoHeader(
-                                          width: width,
-                                          img: 'assets/icons/water-drop.png',
-                                          label: 'pH Levels',
-                                          value: '6',
-                                        ),
-                                        buildCardInfoHeader(
-                                          width: width,
-                                          img: 'assets/icons/wind-direction.png',
-                                          label: 'Wind Direction',
-                                          value: currentData!.windDir!.toUpperCase().contains('N')
-                                              ? 'NORTH'
-                                              : currentData.windDir!.toUpperCase().contains('E')
-                                                  ? 'EAST'
-                                                  : currentData.windDir!.toUpperCase().contains('S')
-                                                      ? 'SOUTH'
-                                                      : currentData.windDir!.toUpperCase().contains('W')
-                                                          ? 'WEST'
-                                                          : 'OTHER',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(12),
-                            height: Get.height,
-                            width: width,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(.4),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 6,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade200,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Weather Forecast',
-                                      style: Get.textTheme.labelMedium?.copyWith(
-                                        color: Colors.blue.shade900,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width: width,
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                  ),
-                                  decoration: const BoxDecoration(),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                    child: Expanded(
+                                  SizedBox(
+                                    width: width,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                       child: Row(
                                         children: [
-                                          buildCardForeCast(time: '12:00', img: 'assets/icons/sun.png', degree: '32'),
-                                          buildCardForeCast(
-                                              time: '16:00', img: 'assets/icons/cloudy.png', degree: '29'),
-                                          buildCardForeCast(
-                                              time: '18:00', img: 'assets/icons/cloudy.png', degree: '30'),
-                                          buildCardForeCast(
-                                              time: '19:00', img: 'assets/icons/rainy-day.png', degree: '22'),
-                                          buildCardForeCast(time: '22:00', img: 'assets/icons/storm.png', degree: '22'),
+                                          buildCardInfoHeader(
+                                            img: 'assets/icons/wind.png',
+                                            label: 'Wind Velocity',
+                                            value: '${controller.data.value.value?.current?.gustKph ?? 0} km/h',
+                                            width: width,
+                                          ),
+                                          buildCardInfoHeader(
+                                            width: width,
+                                            img: 'assets/icons/ultraviolet-solid.png',
+                                            label: 'UV Index',
+                                            value: '${controller.data.value.value?.current?.uv ?? 0}',
+                                          ),
+                                          buildCardInfoHeader(
+                                            width: width,
+                                            img: 'assets/icons/humidity.png',
+                                            label: 'Humidity',
+                                            value: '${controller.data.value.value?.current?.humidity ?? 0}',
+                                          ),
+                                          buildCardInfoHeader(
+                                            width: width,
+                                            img: 'assets/icons/wind-degree.png',
+                                            label: 'Wind Degree',
+                                            value: '${controller.data.value.value?.current?.windDegree ?? 0}°',
+                                          ),
+                                          buildCardInfoHeader(
+                                            width: width,
+                                            img: 'assets/icons/water-drop.png',
+                                            label: 'pH Levels',
+                                            value: '6',
+                                          ),
+                                          buildCardInfoHeader(
+                                            width: width,
+                                            img: 'assets/icons/wind-direction.png',
+                                            label: 'Wind Direction',
+                                            value: (controller.data.value.value?.current?.windDir ?? '-')
+                                                    .toUpperCase()
+                                                    .contains('N')
+                                                ? 'NORTH'
+                                                : (controller.data.value.value?.current?.windDir ?? '-').contains('E')
+                                                    ? 'EAST'
+                                                    : (controller.data.value.value?.current?.windDir ?? '-')
+                                                            .contains('S')
+                                                        ? 'SOUTH'
+                                                        : (controller.data.value.value?.current?.windDir ?? '-')
+                                                                .contains('W')
+                                                            ? 'WEST'
+                                                            : 'OTHER',
+                                          ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
+                            Flexible(
+                              child: ListView(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    height: width,
+                                    width: width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 6,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue.shade200,
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Weather Forecast',
+                                              style: Get.textTheme.labelMedium?.copyWith(
+                                                color: Colors.blue.shade900,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          width: width,
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(),
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            physics:
+                                                const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                            child: Row(
+                                              children: [
+                                                buildCardForeCast(
+                                                    time: '12:00', img: 'assets/icons/sun.png', degree: '32'),
+                                                buildCardForeCast(
+                                                    time: '16:00', img: 'assets/icons/cloudy.png', degree: '29'),
+                                                buildCardForeCast(
+                                                    time: '18:00', img: 'assets/icons/cloudy.png', degree: '30'),
+                                                buildCardForeCast(
+                                                    time: '19:00', img: 'assets/icons/rainy-day.png', degree: '22'),
+                                                buildCardForeCast(
+                                                    time: '22:00', img: 'assets/icons/storm.png', degree: '22'),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 )
