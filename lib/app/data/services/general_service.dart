@@ -20,10 +20,10 @@ class GeneralService extends GetConnect {
         'apikey': AppConfig.API_KEY,
       },
     );
-    log('URLS : ${res.realUri}');
+    // log('URLS : ${res.realUri}');
 
     if (res.statusCode == 200) {
-      log('DATA : ${res.statusCode}');
+      // log('DATA : ${res.statusCode}');
       return GetTimelineWeatherDataModel.fromJson(res.data);
 
       // return Location.fromJson((res.data['location']));
@@ -39,10 +39,10 @@ class GeneralService extends GetConnect {
         'q': city,
       },
     );
-    log('URLS : ${res.realUri}');
+    // log('URLS : ${res.realUri}');
 
     if (res.statusCode == 200) {
-      log('DATA : ${res.statusCode}');
+      // log('DATA : ${res.statusCode}');
       return GetTimelineWeatherDataModel.fromJson(res.data);
     }
   }
@@ -55,7 +55,6 @@ class GeneralService extends GetConnect {
     String? base,
   }) async {
     Response? response;
-    String? queryString;
     try {
       // await initAll(timeout: timeout, base: base);
       var param = (query ?? requestParam?.toMap().removeNullValues());
@@ -64,7 +63,7 @@ class GeneralService extends GetConnect {
       // }
       response = await get(endpoint, query: param);
       if (kDebugMode) {
-        print('url ${response.request?.url}');
+        log('url ${response.request?.url}');
       }
 
       return response;

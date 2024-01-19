@@ -69,7 +69,7 @@ extension DateTimeUtils on DateTime {
     currentDate = this;
     while (daysBefore < count) {
       currentDate = currentDate.subtract(const Duration(days: 1));
-      log(currentDate.weekday.toString());
+      // log(currentDate.weekday.toString());
       if (currentDate.weekday != dayExclude) {
         dateRange.insert(0, currentDate);
         daysBefore++;

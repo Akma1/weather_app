@@ -509,7 +509,7 @@ class Day {
 
 class Hour {
   dynamic? timeEpoch;
-  String? time;
+  DateTime? time;
   double? tempC;
   double? tempF;
   dynamic? isDay;
@@ -586,7 +586,7 @@ class Hour {
 
   Hour copyWith({
     dynamic? timeEpoch,
-    String? time,
+    DateTime? time,
     double? tempC,
     double? tempF,
     dynamic? isDay,
@@ -663,7 +663,7 @@ class Hour {
 
   factory Hour.fromJson(Map<String, dynamic> json) => Hour(
         timeEpoch: json["time_epoch"],
-        time: json["time"],
+        time: DateTime.parse(json["time"]),
         tempC: json["temp_c"],
         tempF: json["temp_f"],
         isDay: json["is_day"],
@@ -702,7 +702,8 @@ class Hour {
 
   Map<String, dynamic> toJson() => {
         "time_epoch": timeEpoch,
-        "time": time,
+        "time":
+            "${time?.year.toString().padLeft(4, '0')}-${time?.month.toString().padLeft(2, '0')}-${time?.day.toString().padLeft(2, '0')}",
         "temp_c": tempC,
         "temp_f": tempF,
         "is_day": isDay,

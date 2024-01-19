@@ -37,7 +37,7 @@ class DashboardController extends GetxController {
       await GeneralService.getAPI(city: 'malang').then((value) {
         if (value is GetTimelineWeatherDataModel) {
           data.value.value = value;
-          log('DATA : ${data.value.value}');
+          // log('DATA : ${data.value.value}');
         }
       });
     } catch (e) {
